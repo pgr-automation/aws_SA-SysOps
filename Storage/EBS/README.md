@@ -1,6 +1,6 @@
 # Amazon Elastic Block Store (EBS)
 
-Amazon Elastic Block Store (EBS) is a cloud-based storage service designed for use with Amazon EC2 (Elastic Compute Cloud). EBS provides persistent block storage volumes that can be attached to EC2 instances, allowing for data persistence beyond the lifecycle of individual instances. This document provides an overview of EBS, including its features, types, and use cases.
+Amazon Elastic Block Store (EBS) is a cloud-based storage service designed for use with Amazon EC2 (Elastic Compute Cloud). EBS provides persistent block storage volumes that can be attached to EC2 instances, allowing for data persistence beyond the lifecycle of individual instances. This document provides an overview of EBS, including its features, types, and use cases. #
 
 ## Key Features of EBS
 
