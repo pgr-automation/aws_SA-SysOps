@@ -32,24 +32,30 @@ Amazon S3 (Simple Storage Service) offers various storage classes tailored for d
 - **Cost**: Lowest cost for infrequent access data, but retrieval costs apply.
 - **Trade-off**: Less durability and availability compared to multi-AZ options.
 
-## 5. S3 Glacier (Archival Storage)
-- **Use Case**: Long-term data archiving with rare access, such as regulatory and media archives.
+## 5. S3 Glacier Instant Retrieval
+- **Use Case**: Archival storage with rare access but requires milliseconds retrieval times. Ideal for archival data that still needs quick access.
+- **Durability and Availability**: 99.999999999% durability.
+- **Retrieval Time**: Instant (milliseconds).
+- **Cost**: Low storage cost and retrieval at the same speed as S3 Standard-IA, but more cost-effective for rarely accessed data.
+
+## 6. S3 Glacier Flexible Retrieval (formerly Glacier)
+- **Use Case**: Long-term data archiving where data is accessed infrequently, such as regulatory archives or media archives.
 - **Durability**: 99.999999999% durability.
 - **Retrieval Time**:
-  - Expedited: 1-5 minutes (small objects).
+  - Expedited: 1-5 minutes for small objects.
   - Standard: 3-5 hours.
   - Bulk: 5-12 hours.
-- **Cost**: Extremely low-cost storage, but higher retrieval costs.
+- **Cost**: Lower storage costs compared to S3 Glacier Instant Retrieval, but with varying retrieval times.
 
-## 6. S3 Glacier Deep Archive
-- **Use Case**: Lowest-cost storage for long-term data retention with very rare access.
+## 7. S3 Glacier Deep Archive
+- **Use Case**: The lowest-cost storage for long-term retention and compliance purposes where data is rarely (if ever) retrieved.
 - **Durability**: 99.999999999% durability.
 - **Retrieval Time**:
   - Standard: 12 hours.
   - Bulk: Up to 48 hours.
-- **Cost**: Lowest-cost option, but long retrieval times.
+- **Cost**: The lowest cost option, but with long retrieval times.
 
-## 7. S3 Outposts
+## 8. S3 Outposts
 - **Use Case**: Local object storage on-premises for low-latency, compliance, or local processing needs.
 - **Durability and Availability**: Same as S3 Standard but tailored for on-premises use.
 - **Cost**: Based on hardware and configuration.
