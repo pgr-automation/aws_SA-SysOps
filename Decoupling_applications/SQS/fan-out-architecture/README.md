@@ -43,6 +43,10 @@ Create multiple SQS queues that will be subscribed to the SNS topic.
 6. Click **Create subscription**.
 7. Repeat this step for each SQS queue you created.
 
+### Create IAM roles for Lambda with 
+1. SQS
+2. CloudWatchLogs
+
 ### Step 4: Create a Lambda Function with Python Code
 
 1. Open the [AWS Lambda console](https://console.aws.amazon.com/lambda).
