@@ -47,3 +47,22 @@ Consider an e-commerce application that uses SQS to process order data. If a mes
 This setup ensures that messages that repeatedly fail to be processed are redirected to the DLQ, allowing for better troubleshooting and stability in the message-processing architecture.
 
 ![alt text](<Screenshot from 2024-10-09 14-39-17.png>)
+
+```bash 
+1. Create I am role for Lambda and grant access to SNS, SQS, Cloud watch
+2. Create lambda function and attach the role
+import json
+import time
+
+def lambda_handler(event, context):
+
+    print(event)
+    time.sleep(3)
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Hello from Lambda!')
+    }
+ 3. Create SNS topic and subcribe to the lambda funtion
+ 4. Create SQS queue
+ 5. Create DLQ under lambda function with Asynchronous invocation select sqs
+ ```
