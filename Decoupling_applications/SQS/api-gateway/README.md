@@ -50,7 +50,7 @@ This guide explains how to integrate Amazon SQS with API Gateway directly, allow
 - [IAM Roles for API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-setup-iam.html)
 
 
-```bash 
+```
 SQS apigateway 
 1 . Create sqs 
 2. create apigateway
