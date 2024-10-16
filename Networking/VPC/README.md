@@ -167,3 +167,72 @@ aws ec2 create-internet-gateway
 aws ec2 attach-internet-gateway --vpc-id <VpcId> --internet-gateway-id <InternetGatewayId>
 ```
 
+### 4. Create a Route Table for the Public Subnets
+```bash
+# Create a route table for the public subnets
+aws ec2 create-route-table --vpc-id <VpcId>
+
+# Add a route to the internet gateway
+aws ec2 create-route --route-table-id <RouteTableId> --destination-cidr-block 0.0.0.0/0 --gateway-id <InternetGatewayId>
+
+# Associate the route table with the public subnets
+aws ec2 associate-route-table --subnet-id <PublicSubnetId1> --route-table-id <RouteTableId>
+aws ec2 associate-route-table --subnet-id <PublicSubnetId2> --route-table-id <RouteTableId>
+```
+### 5. Create a NAT Gateway for the Private Subnets
+```bash
+# Allocate an Elastic IP for the NAT Gateway
+aws ec2 allocate-address
+
+# Create the NAT Gateway in one of the public subnets
+aws ec2 create-nat-gateway --subnet-id <PublicSubnetId1> --allocation-id <AllocationId>
+
+# Update the private subnet route tables to use the NAT Gateway
+aws ec2 create-route-table --vpc-id <VpcId>
+aws ec2 create-route --route-table-id <PrivateRouteTableId> --destination-cidr-block 0.0.0.0/0 --nat-gateway-id <NatGatewayId>
+
+# Associate the private route table with the private subnets
+aws ec2 associate-route-table --subnet-id <PrivateSubnetId1> --route-table-id <PrivateRouteTableId>
+aws ec2 associate-route-table --subnet-id <PrivateSubnetId2> --route-table-id <PrivateRouteTableId>
+```
+### 6. Create Security Groups for Instances
+```bash
+# Create a security group for public instances
+aws ec2 create-security-group --group-name PublicSG --description "Security group for public instances" --vpc-id <VpcId>
+
+# Allow SSH and HTTP traffic in the public security group
+aws ec2 authorize-security-group-ingress --group-id <PublicSGId> --protocol tcp --port 22 --cidr 0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id <PublicSGId> --protocol tcp --port 80 --cidr 0.0.0.0/0
+
+# Create a security group for private instances
+aws ec2 create-security-group --group-name PrivateSG --description "Security group for private instances" --vpc-id <VpcId>
+
+# Allow inbound traffic from the public security group (e.g., for database access)
+aws ec2 authorize-security-group-ingress --group-id <PrivateSGId> --protocol tcp --port 3306 --source-group <PublicSGId>
+
+```
+### 7. Create Network Access Control Lists (NACLs
+```bash
+# Create a NACL for the public subnets
+aws ec2 create-network-acl --vpc-id <VpcId>
+
+# Create a NACL for the private subnets
+aws ec2 create-network-acl --vpc-id <VpcId>
+
+# Set rules to allow/deny traffic for the NACLs as needed
+```
+### 8. Configure VPC Peering (Optional)
+```bash
+# Create a VPC peering connection
+aws ec2 create-vpc-peering-connection --vpc-id <VpcId1> --peer-vpc-id <VpcId2>
+
+# Accept the VPC peering connection
+aws ec2 accept-vpc-peering-connection --vpc-peering-connection-id <PeeringConnectionId>
+
+# Add route table entries to communicate between peered VPCs
+```
+### 9. Create VPC Endpoints (Optional)
+```bash
+# Create a VPC endpoint for S3
+aws ec2 create-vpc-endpoint --vpc-id <VpcId> --service-name com.amazonaws.<region>.s3 --route-table-ids <RouteTableId>
+```
