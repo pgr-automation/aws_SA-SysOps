@@ -133,3 +133,37 @@
 - **Troubleshooting**:
   - Verify that the route tables for the subnets allow communication with each other.
   - Check if NACLs or security groups are restricting traffic between subnets.
+
+## Steps to Create a VPC with All Core Components Using AWS CLI
+
+### 1. Create a VPC
+```bash
+aws ec2 create-vpc --cidr-block 10.0.0.0/16
+
+```
+* Output: This command will return a VpcId which you will use in the following steps.
+* Explanation: This creates a VPC with a CIDR block of 10.0.0.0/16.
+
+### 2. Create Subnets
+```bash
+# Create a public subnet in AZ1
+aws ec2 create-subnet --vpc-id <VpcId> --cidr-block 10.0.1.0/24 --availability-zone <AZ1>
+
+# Create a private subnet in AZ1
+aws ec2 create-subnet --vpc-id <VpcId> --cidr-block 10.0.2.0/24 --availability-zone <AZ1>
+
+# Create a public subnet in AZ2
+aws ec2 create-subnet --vpc-id <VpcId> --cidr-block 10.0.3.0/24 --availability-zone <AZ2>
+
+# Create a private subnet in AZ2
+aws ec2 create-subnet --vpc-id <VpcId> --cidr-block 10.0.4.0/24 --availability-zone <AZ2>
+```
+### 3. Create an Internet Gateway (IGW) and Attach it to the VPC
+```bash
+# Create an Internet Gateway
+aws ec2 create-internet-gateway
+
+# Attach the Internet Gateway to your VPC
+aws ec2 attach-internet-gateway --vpc-id <VpcId> --internet-gateway-id <InternetGatewayId>
+```
+
