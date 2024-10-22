@@ -98,3 +98,18 @@ aws ec2 run-instances --placement "GroupName=<group-name>,AvailabilityZone=<AZ>"
 
 * - Pre-warm your placement groups by launching smaller instances, and scale up as needed.
 * - If you encounter capacity constraints, consider using Spread or Partition placement strategies for better fault tolerance.
+
+## Here are the best application types for each of the EC2 placement group strategies:
+
+### 1. Cluster Placement Group
+
+* Applications:
+
+- High-Performance Computing (HPC): Applications like machine learning models, big data processing, and scientific simulations that require very high-speed inter-node communication.
+- Batch Processing: Workloads with high data transfer rates between instances, such as video encoding, financial modeling, and 3D rendering.
+- Real-time Data Processing: Low-latency systems like real-time analytics or streaming applications (e.g., Apache Kafka, Apache Spark).
+- Distributed In-memory Databases: Applications such as in-memory caches (e.g., Redis, Memcached) that benefit from low-latency access between nodes.
+
+* Why Cluster Group?
+
+* -Tight proximity and low-latency networking provide excellent performance for applications requiring fast communication between instances.
