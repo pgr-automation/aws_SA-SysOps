@@ -103,7 +103,7 @@ aws ec2 run-instances --placement "GroupName=<group-name>,AvailabilityZone=<AZ>"
 
 ### 1. Cluster Placement Group
 
-* Applications:
+* #  Applications:
 
 - High-Performance Computing (HPC): Applications like machine learning models, big data processing, and scientific simulations that require very high-speed inter-node communication.
 - Batch Processing: Workloads with high data transfer rates between instances, such as video encoding, financial modeling, and 3D rendering.
@@ -112,4 +112,6 @@ aws ec2 run-instances --placement "GroupName=<group-name>,AvailabilityZone=<AZ>"
 
 * Why Cluster Group?
 
-* -Tight proximity and low-latency networking provide excellent performance for applications requiring fast communication between instances.
+* - Tight proximity and low-latency networking provide excellent performance for applications requiring fast communication between instances.
+
+### 
