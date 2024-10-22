@@ -33,7 +33,7 @@ aws ec2 create-placement-group --group-name <group-name> --strategy <cluster|spr
 ```
 
 ### 2. Launch Instances in the Placement Group
-    When launching EC2 instances, specify the placement group:
+When launching EC2 instances, specify the placement group:
 
 - AWS Management Console: Under Advanced Details during instance launch, select the placement group.
 -  AWS CLI:
