@@ -55,12 +55,12 @@ aws ec2 run-instances --placement "GroupName=<group-name>,AvailabilityZone=<AZ>"
 ``` 
 InsufficientInstanceCapacity: We currently do not have sufficient capacity in the Availability Zone.
 ```
-    - Solution: Use smaller instance types, or try launching in a different AZ or region.
+* - Solution: Use smaller instance types, or try launching in a different AZ or region.
 
 ### 2. Incompatible Instance Types
 
 - Certain older instance types are not supported in Cluster Placement Groups.
-    - Solution: Verify that the instance types you are using are supported.
+* - Solution: Verify that the instance types you are using are supported.
 
 ### 3. Partition Group Failures
 
@@ -69,4 +69,4 @@ InsufficientInstanceCapacity: We currently do not have sufficient capacity in th
 ### 4. Unsupported Placement Group Type
 
 - If incompatible instance types are added to a spread or partition group, launch failures may occur.
-    - Solution: Ensure all instances are compatible with the chosen placement strategy.
+* - Solution: Ensure all instances are compatible with the chosen placement strategy.
