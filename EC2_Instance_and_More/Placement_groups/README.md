@@ -69,3 +69,14 @@ aws ec2 run-instances --placement "GroupName=<group-name>,AvailabilityZone=<AZ>"
 
 - If incompatible instance types are added to a spread or partition group, launch failures may occur.
 * - Solution: Ensure all instances are compatible with the chosen placement strategy.
+
+### Supported Instance Types
+- Cluster Placement Group
+
+* - Supported instance types include compute-optimized, GPU, and high-performance instances:
+
+    * Examples: C5, C6g, R5, R6g, M5, M6g, P3, P4, Inf1, G4, G5, X1, X2.
+
+- Spread and Partition Placement Groups
+
+* - Most general-purpose, compute-optimized, and memory-optimized instance types are supported.
