@@ -43,6 +43,30 @@ aws ec2 run-instances --placement "GroupName=<group-name>,AvailabilityZone=<AZ>"
  
 ### Use Cases
 
--Cluster Placement Group: Best for applications requiring high network throughput and low-latency communication, such as HPC workloads, batch processing, and machine learning.
+- Cluster Placement Group: Best for applications requiring high network throughput and low-latency communication, such as HPC workloads, batch processing, and machine learning.
 - Spread Placement Group: Suitable for highly available applications like replicated databases, fault-tolerant applications, and microservices.
 - Partition Placement Group: Ideal for distributed systems like HDFS, Cassandra, or HBase that require failure isolation and partitioning across hardware.
+
+
+## Issues and Troubleshooting
+### 1. Instance Launching Constraints
+
+- For Cluster Placement Groups, the capacity in a single AZ may be limited, resulting in errors like:
+``` 
+InsufficientInstanceCapacity: We currently do not have sufficient capacity in the Availability Zone.
+```
+    Solution: Use smaller instance types, or try launching in a different AZ or region.
+
+### 2. Incompatible Instance Types
+
+- Certain older instance types are not supported in Cluster Placement Groups.
+    Solution: Verify that the instance types you are using are supported.
+
+### 3. Partition Group Failures
+
+- Ensure the application handles partition failures appropriately since each partition isolates hardware but not AZ-wide failures.
+
+### 4. Unsupported Placement Group Type
+
+- If incompatible instance types are added to a spread or partition group, launch failures may occur.
+    Solution: Ensure all instances are compatible with the chosen placement strategy.
