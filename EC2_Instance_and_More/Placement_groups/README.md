@@ -52,9 +52,8 @@ aws ec2 run-instances --placement "GroupName=<group-name>,AvailabilityZone=<AZ>"
 ### 1. Instance Launching Constraints
 
 - For Cluster Placement Groups, the capacity in a single AZ may be limited, resulting in errors like:
-``` 
-InsufficientInstanceCapacity: We currently do not have sufficient capacity in the Availability Zone.
-```
+
+- InsufficientInstanceCapacity: We currently do not have sufficient capacity in the Availability Zone.
 * - Solution: Use smaller instance types, or try launching in a different AZ or region.
 
 ### 2. Incompatible Instance Types
