@@ -70,7 +70,7 @@ aws ec2 run-instances --placement "GroupName=<group-name>,AvailabilityZone=<AZ>"
 - If incompatible instance types are added to a spread or partition group, launch failures may occur.
 * - Solution: Ensure all instances are compatible with the chosen placement strategy.
 
-### Supported Instance Types
+## Supported Instance Types
 - Cluster Placement Group
 
 * - Supported instance types include compute-optimized, GPU, and high-performance instances:
@@ -80,3 +80,21 @@ aws ec2 run-instances --placement "GroupName=<group-name>,AvailabilityZone=<AZ>"
 - Spread and Partition Placement Groups
 
 * - Most general-purpose, compute-optimized, and memory-optimized instance types are supported.
+
+## Number of Instances Supported
+- Cluster Placement Group
+
+* -  No hard limit, but depends on available capacity in a single Availability Zone.
+
+- Spread Placement Group
+
+* - Supports a maximum of 7 running instances per Availability Zone.
+
+- Partition Placement Group
+
+ -  Supports up to 7 partitions per Availability Zone, and each partition can contain many instances depending on your account limits.
+
+### Best Practices
+
+* - Pre-warm your placement groups by launching smaller instances, and scale up as needed.
+* - If you encounter capacity constraints, consider using Spread or Partition placement strategies for better fault tolerance.
