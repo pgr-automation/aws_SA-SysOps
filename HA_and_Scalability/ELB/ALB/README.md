@@ -76,7 +76,7 @@ Using ALB in your architecture can improve scalability, enhance user experience,
 ## ALB Creation 
 ```
 Step: 1 Create a target group
-1. Create SG and allow port 80 or 443
+1. Create SG and allow port 80 or 443 to access only from ALB
 2. Create EC2 Instance 
 3. Create a target group 
  	Configure below:
