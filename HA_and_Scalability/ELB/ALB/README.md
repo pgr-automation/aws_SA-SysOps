@@ -102,3 +102,97 @@ Step: 2
 	
 3. Create Load balancer , once created test the DNS name.
 ```
+
+
+# AWS Application Load Balancer (ALB) Rules
+
+**AWS Application Load Balancer (ALB)** supports advanced routing capabilities through the use of rules. These rules allow you to define how incoming requests are processed and routed to target groups based on specific conditions. This document provides an overview of ALB rules, their types, configuration, and examples.
+
+---
+
+## Overview of ALB Rules
+
+ALB rules are evaluated in the order they are defined, with the first matching rule being applied to the incoming request. If a request does not match any rules, it is routed to the default action specified for the ALB.
+
+### Types of ALB Rules
+
+1. **Host-Based Routing**
+   - Route traffic based on the hostname in the request (e.g., `example.com`, `api.example.com`).
+   - Useful for directing traffic to different services or applications hosted on the same load balancer.
+
+2. **Path-Based Routing**
+   - Route traffic based on the URL path of the request (e.g., `/api/*`, `/images/*`).
+   - Enables you to direct requests to different target groups based on specific paths.
+
+3. **HTTP Header-Based Routing**
+   - Route requests based on the values of HTTP headers (e.g., `User-Agent`, `X-Forwarded-For`).
+   - Allows for more granular control of traffic based on client characteristics.
+
+4. **Query String Parameter-Based Routing**
+   - Route requests based on the values of query string parameters (e.g., `?version=1.0`).
+   - Useful for directing traffic to different versions of an application.
+
+5. **HTTP Method-Based Routing**
+   - Route requests based on the HTTP method (e.g., `GET`, `POST`, `PUT`).
+   - Useful for APIs that have different actions for different methods.
+
+---
+
+## Configuring ALB Rules
+
+### Step 1: Navigate to the ALB in the AWS Management Console
+1. Sign in to the [AWS Management Console](https://aws.amazon.com/console/).
+2. Go to the EC2 Dashboard and click on **Load Balancers** under **Load Balancing**.
+3. Select your Application Load Balancer.
+
+### Step 2: Create or Modify a Listener
+1. Under the **Listeners** tab, click on the **View/edit rules** option for the desired listener (usually HTTP or HTTPS).
+2. To create a new rule, click **Add rule**.
+
+### Step 3: Define Conditions for the Rule
+1. **Add conditions**:
+   - **Host header**: Specify the hostnames to match.
+   - **Path**: Specify the URL paths to match.
+   - **HTTP headers**: Add specific headers and their values.
+   - **Query strings**: Specify query parameters and their values.
+   - **HTTP methods**: Specify the HTTP methods to match.
+2. **Select the action**:
+   - **Forward**: Specify the target group to forward the request to.
+   - **Redirect**: Redirect requests to a different URL.
+   - **Return fixed responses**: Return a fixed response (e.g., a 404 page).
+
+### Step 4: Review and Save the Rule
+1. Review the conditions and action specified for the rule.
+2. Click **Save** to apply the changes.
+
+---
+
+## Examples of ALB Rules
+
+### Example 1: Host-Based Routing
+- **Condition**: If the host is `api.example.com`
+- **Action**: Forward to the `api-target-group`
+
+### Example 2: Path-Based Routing
+- **Condition**: If the path is `/images/*`
+- **Action**: Forward to the `images-target-group`
+
+### Example 3: Query String Parameter-Based Routing
+- **Condition**: If the query string parameter `version` equals `1.0`
+- **Action**: Forward to the `v1-target-group`
+
+### Example 4: Redirect Rule
+- **Condition**: If the path is `/old-path`
+- **Action**: Redirect to `https://example.com/new-path`
+
+### Example 5: Return Fixed Response
+- **Condition**: If the path is `/maintenance`
+- **Action**: Return a fixed response with a 503 status code and a custom message.
+
+---
+
+## Conclusion
+
+Application Load Balancer rules provide powerful routing capabilities for managing and directing incoming traffic based on specific conditions. By using host-based, path-based, header-based, query string parameter-based, and HTTP method-based routing, you can enhance the flexibility and performance of your applications.
+
+For more details and advanced configurations, refer to the [AWS ALB Documentation](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-listeners.html).
