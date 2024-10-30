@@ -71,3 +71,34 @@
 The AWS Application Load Balancer (ALB) provides advanced Layer 7 load balancing, making it ideal for applications with complex routing requirements, such as microservices, containerized applications, and real-time communication. With features like path-based and host-based routing, SSL termination, WebSocket support, and native user authentication, ALB enables high availability, security, and performance for modern web applications. 
 
 Using ALB in your architecture can improve scalability, enhance user experience, and simplify management for complex web-based applications.
+
+
+## ALB Creation 
+```
+Step: 1 Create a target group
+1. Create SG and allow port 80 or 443
+2. Create EC2 Instance 
+3. Create a target group 
+ 	Configure below:
+ 	- choose trget type
+ 	- Give targrt group name
+ 	- Select protocal with required port (http/https/tcp/udp/tls etc...)
+ 	- Select VPC
+ 	- Selet Protocal Version (HTTP1/HTTP2)
+ 	- Configure Health check if required
+4. Register the targets with created EC2 instances. and configure instance port 
+5. Include as pending below
+6. Create.
+
+Step: 2 
+1. Create Load Balancer
+	- scheme -> Internet facinf
+	- IP adress type -> IPV4
+	- Network Mapping -> Select VPC -> selet availability zones
+	- Selet security which is created for ALB
+	
+2. Listers and mapping 
+	- select Protocal(http/https etc..) and target group
+	
+3. Create Load balancer , once created test the DNS name.
+```
