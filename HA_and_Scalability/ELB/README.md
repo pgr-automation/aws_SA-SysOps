@@ -77,3 +77,6 @@
 ## Summary
 
 AWS Elastic Load Balancing (ELB) enables high availability, scalability, and fault tolerance by distributing traffic across multiple targets in one or more availability zones. With support for various load balancer types (Application, Network, and Gateway), ELB is adaptable to a wide range of application needs. It also offers robust security features, automatic scaling, and built-in health checks, making it a reliable choice for maintaining application uptime and performance.
+
+
+![alt text](image.png)
