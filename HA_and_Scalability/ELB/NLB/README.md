@@ -75,3 +75,43 @@ The **AWS Network Load Balancer (NLB)** is designed to handle millions of reques
 AWS Network Load Balancer is a powerful solution for applications that require high throughput, low latency, and support for TCP and UDP protocols. Its features, including static IP addresses, health checks, and seamless integration with AWS services, make it an ideal choice for various use cases ranging from real-time applications to hybrid environments.
 
 For more information, refer to the [AWS NLB Documentation](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/network-load-balancers.html).
+
+
+# NLB Creation
+
+```
+Step 1 
+
+1. Create SG and allow port 80 or 443
+2. Create EC2 Instance 
+3. Create a target group 
+ 	Configure below:
+ 	- choose trget type
+ 	- Give targrt group name
+ 	- Select protocal with required port (tcp)
+ 	- Select VPC
+ 	- Selet Protocal Version (HTTP1/HTTP2)
+ 	- Configure Health check if required (tcp/http)
+4. Register the targets with created EC2 instances. and configure instance port 
+5. Include as pending below
+6. Create.
+
+Step: 2 
+1. Create Load Balancer
+	- scheme -> Internet facinf
+	- IP adress type -> IPv4
+	- Network Mapping -> Select VPC -> selet availability zones > Select IPv4 address (EIP/ assigned by aws)
+	- Selet security which is created for ALB
+	
+2. Listers and mapping 
+	- select Protocal(TCP/UDP) and target group
+	- Configure Advance Helth check setttings 
+		- Health check port
+		- Healthy threshold
+		- UnHealthy threshold 
+		- Timeout
+		- Interval
+		- Success Code
+	
+3. Create Load balancer , once created test the DNS name.
+```
