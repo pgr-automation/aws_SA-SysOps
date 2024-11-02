@@ -196,3 +196,91 @@ ALB rules are evaluated in the order they are defined, with the first matching r
 Application Load Balancer rules provide powerful routing capabilities for managing and directing incoming traffic based on specific conditions. By using host-based, path-based, header-based, query string parameter-based, and HTTP method-based routing, you can enhance the flexibility and performance of your applications.
 
 For more details and advanced configurations, refer to the [AWS ALB Documentation](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-listeners.html).
+
+
+# AWS Application Load Balancer (ALB) Rules
+
+This document provides an overview of configuring rules for AWS Application Load Balancer (ALB). ALB rules define how incoming requests are routed to targets based on conditions and actions. This enables fine-grained control over request handling and improves load balancing performance.
+
+---
+
+## Rule Components
+
+### 1. Conditions
+Rules can be configured to route requests based on various conditions:
+
+- **Host Header**: Route requests based on the domain name. 
+  - **Example**: Route `www.example.com` traffic to a specific target group.
+- **Path**: Route requests based on the URL path.
+  - **Example**: Requests with path `/api/*` are routed to an API-specific target group.
+- **HTTP Header**: Route requests based on the presence and value of a specific HTTP header.
+  - **Example**: Route requests with `X-Header=Test` to a designated target group.
+- **HTTP Method**: Route requests based on HTTP methods such as `GET`, `POST`, `PUT`, etc.
+- **Query String**: Route requests based on key-value pairs in the URL query string.
+  - **Example**: Route requests with `?user=admin` to an admin-specific target group.
+- **Source IP**: Route requests based on the client's IP address.
+  - **Example**: Allow access only to specific IP ranges.
+
+### 2. Actions
+Rules also define the actions to take once a condition is met:
+
+- **Forward**: Forward requests to a specified target group.
+- **Redirect**: Redirect requests to another URL or protocol (e.g., HTTP to HTTPS).
+  - **Options**: Set status code (`HTTP 301` or `HTTP 302`) and redirection path.
+- **Fixed Response**: Return a predefined response, such as an HTTP status code, headers, and a message body.
+  - **Example**: Return a `403 Forbidden` response for unauthorized requests.
+- **Authenticate**: Redirect requests to an authentication service like Amazon Cognito or OpenID Connect (OIDC) for user verification.
+
+### 3. Priority
+Each rule has a priority that determines the order in which rules are evaluated:
+
+- **Lowest Priority**: Rules with lower numbers are evaluated first.
+- **Default Rule**: The default rule (priority `0`) applies if no other rules match the request conditions.
+
+---
+
+## Example Rule Configuration
+
+Below is a sample configuration for ALB rules in YAML format:
+
+```yaml
+Rules:
+  - Priority: 1
+    Conditions:
+      - Field: host-header
+        HostHeaderConfig:
+          Values: ["www.example.com"]
+      - Field: path-pattern
+        PathPatternConfig:
+          Values: ["/api/*"]
+    Actions:
+      - Type: forward
+        TargetGroupArn: "arn:aws:elasticloadbalancing:region:account-id:targetgroup/example-target-group"
+
+  - Priority: 2
+    Conditions:
+      - Field: http-header
+        HttpHeaderConfig:
+          HttpHeaderName: "X-Header"
+          Values: ["Test"]
+    Actions:
+      - Type: redirect
+        RedirectConfig:
+          Protocol: HTTPS
+          Port: "443"
+          StatusCode: HTTP_301
+          Host: "new.example.com"
+          Path: "/new-path"
+
+  - Priority: 3
+    Conditions:
+      - Field: source-ip
+        SourceIpConfig:
+          Values: ["192.168.0.0/24"]
+    Actions:
+      - Type: fixed-response
+        FixedResponseConfig:
+          StatusCode: "403"
+          ContentType: "text/plain"
+          MessageBody: "Access Denied"
+```
