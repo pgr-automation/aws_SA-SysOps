@@ -41,3 +41,7 @@ Serverless applications are event-driven, highly scalable, and cost-efficient be
 - Data processing workflows
 - Web and mobile backends
 - IoT applications
+
+
+
+![alt text](image.png)
