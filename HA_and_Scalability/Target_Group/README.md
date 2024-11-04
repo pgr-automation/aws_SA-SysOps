@@ -85,3 +85,22 @@
 ---
 
 By following these steps, you can establish a robust, secure, and highly available Target Group configuration, suitable for production environments.
+
+
+
+```
+Step: 1 Create a target group
+1. Create SG and allow port 80 or 443 to access only from ALB
+2. Create EC2 Instance 
+3. Create a target group 
+ 	Configure below:
+ 	- choose trget type
+ 	- Give targrt group name
+ 	- Select protocal with required port (http/https/tcp/udp/tls etc...)
+ 	- Select VPC
+ 	- Selet Protocal Version (HTTP1/HTTP2)
+ 	- Configure Health check if required
+4. Register the targets with created EC2 instances. and configure instance port 
+5. Include as pending below
+6. Create
+```
