@@ -104,3 +104,102 @@ ASG:
 ---
 
 Following these best practices can enhance the reliability, performance, and cost-effectiveness of your AWS Auto Scaling Groups.
+
+
+
+# Setting up AWS Auto Scaling Group (ASG) with Target Group and Elastic Load Balancer (ELB)
+
+## Prerequisites
+- AWS Account with necessary permissions.
+- Amazon Virtual Private Cloud (VPC) with at least two subnets in different Availability Zones.
+
+---
+
+## Step 1: Create a Target Group
+
+1. Go to the **EC2 Dashboard** in the AWS Management Console.
+2. In the left menu, under **Load Balancing**, click on **Target Groups**.
+3. Click **Create target group**.
+4. Set the **Target type** to `Instance`.
+5. Configure the **Target group details**:
+   - **Target group name**: Give a meaningful name (e.g., `my-app-tg`).
+   - **Protocol**: Choose `HTTP` or `HTTPS` depending on your app.
+   - **Port**: Set the port your application uses (e.g., `80` for HTTP).
+   - **VPC**: Select the VPC where your instances will run.
+6. Configure **Health checks** (default settings work, but you can customize):
+   - **Protocol**: Choose `HTTP` or `HTTPS`.
+   - **Path**: Set a path (e.g., `/health`) for checking instance health.
+7. Click **Create target group**.
+
+---
+
+## Step 2: Create an Application Load Balancer (ALB)
+
+1. In the EC2 Dashboard, under **Load Balancing**, click **Load Balancers**.
+2. Click **Create Load Balancer** and select **Application Load Balancer**.
+3. Configure **Load Balancer settings**:
+   - **Name**: Provide a unique name (e.g., `my-app-alb`).
+   - **Scheme**: Choose `Internet-facing` for public access or `Internal` for private access.
+   - **IP address type**: Choose `IPv4`.
+4. Under **Network mapping**, select the VPC and subnets (at least two in different AZs).
+5. Under **Security groups**, select an existing security group or create a new one allowing inbound traffic on the port your app uses (e.g., `80` for HTTP).
+6. Under **Listeners and routing**:
+   - **Listener**: Configure `HTTP` or `HTTPS` listener.
+   - **Default action**: Select the target group you created in Step 1.
+7. (Optional) If using HTTPS, upload your SSL certificate.
+8. Click **Create load balancer**.
+
+---
+
+## Step 3: Create a Launch Template
+
+1. In the **EC2 Dashboard**, click on **Launch Templates** under **Instances**.
+2. Click **Create launch template**.
+3. Provide **Launch template name** and **Description**.
+4. Under **Application and OS Images (Amazon Machine Image)**, select an AMI.
+5. Select an **Instance type** (e.g., `t2.micro`).
+6. Configure **Key pair (login)** if SSH access is needed.
+7. Configure **Network settings**:
+   - Set **Security groups** to allow the required traffic (e.g., HTTP, HTTPS).
+8. Add **Storage** settings if needed.
+9. (Optional) Add **Advanced details** such as User Data to configure instances on launch.
+10. Click **Create launch template**.
+
+---
+
+## Step 4: Create an Auto Scaling Group (ASG)
+
+1. Go to the **Auto Scaling Groups** section in the EC2 Dashboard.
+2. Click **Create Auto Scaling group**.
+3. Name your ASG (e.g., `my-app-asg`) and choose the **Launch template** created in Step 3.
+4. Click **Next** to configure **Instance purchase options**.
+   - Select `On-Demand` or **Mixed instances** for cost optimization.
+5. Under **Network**, select your **VPC** and **Subnets** (select at least two subnets across different AZs).
+6. Attach the ASG to your Load Balancer:
+   - **Attach to a load balancer**: Select `Application Load Balancer` or `Network Load Balancer`.
+   - **Target Group**: Select the target group created in Step 1.
+7. Configure **Health checks** to `ELB` for accurate health monitoring.
+8. Configure the **Desired capacity**, **Minimum capacity**, and **Maximum capacity**.
+9. Set up **Scaling policies**:
+   - Choose **Target tracking scaling policy**.
+   - **Metric type**: Select a metric (e.g., `ASGAverageCPUUtilization`).
+   - **Target value**: Set a target value (e.g., `50` for 50% CPU utilization).
+10. Configure **Notifications** (optional) to send alerts on scaling events.
+11. Click **Create Auto Scaling group**.
+
+---
+
+## Step 5: Testing the Auto Scaling Group
+
+1. Go to the **Load Balancers** section and copy the DNS name of your ALB.
+2. Paste the DNS name in your browser. You should see your application if the instances are healthy and the scaling group is functioning correctly.
+3. To test scaling, simulate high load (or use AWS CloudWatch Alarms) to verify that ASG adds instances according to your scaling policy.
+
+---
+
+## Cleanup (Optional)
+To avoid unnecessary charges, delete the ASG, Target Group, ALB, and other resources created after testing.
+
+---
+
+This setup will automatically scale your instances up or down based on demand, distributing traffic across instances using the Application Load Balancer.
