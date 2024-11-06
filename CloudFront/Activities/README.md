@@ -32,4 +32,4 @@ aws cloudfront create-invalidation --distribution-id YOUR_DISTRIBUTION_ID --path
    # How to make EC2/ALB Instance Accessible from CloudFront Only
 
    1. Go to VPC > Managed prefix lists >  com.amazonaws.global.cloudfront.origin-facing - get prefix id 
-   2. Go to instance Security Group and allow the prefix id from above
+   2. Go to instance Security Group and allow HTTP -  from above prefix id
