@@ -110,6 +110,66 @@ EFS is ideal for applications requiring shared file storage, such as content man
 
 ---
 
+
+# AWS EFS Access Points
+
+AWS EFS (Elastic File System) Access Points provide a way to create application-specific entry points into an EFS file system. They allow customized permissions and directories for different workloads, making it easier to securely share data across applications.
+
+---
+
+## Features of EFS Access Points
+
+- **Custom Entry Points**: Define a specific directory within the file system as the root, allowing applications to access only that subdirectory.
+- **User and Group Overrides**: Set POSIX user and group IDs for all file system requests through the access point.
+- **Security**: Control access using IAM roles or users, ensuring secure, managed access to shared file systems.
+- **Multi-Tenancy Support**: Useful for scenarios where different applications or users need isolated storage within the same EFS.
+
+---
+
+## Use Cases
+
+- **Multi-Tenant Architectures**: Separate data access for multiple applications or users in the same file system.
+- **Permissions Enforcement**: Enforce specific POSIX permissions regardless of the calling application's native support.
+
+---
+
+## Steps to Set Up EFS Access Points
+
+### 1. Create an Access Point in AWS Console
+
+1. Open the **EFS** service in the AWS Management Console.
+2. Select your EFS file system and go to **Access Points**.
+3. Click on **Create Access Point**.
+4. Configure the root directory path, POSIX user and group IDs, and permissions.
+   
+### 2. Configure Access with IAM
+
+Create an IAM policy to restrict access to the EFS Access Point. Attach this policy to the IAM role used by the EC2 instances or ECS tasks that need access.
+
+#### Example IAM Policy
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "elasticfilesystem:ClientMount",
+        "elasticfilesystem:ClientWrite",
+        "elasticfilesystem:ClientRootAccess"
+      ],
+      "Resource": "arn:aws:elasticfilesystem:<region>:<account-id>:access-point/<access_point_id>"
+    }
+  ]
+}
+```
+
+### 3. Mounting EFS Using the Access Point
+```bash
+sudo mount -t efs -o tls,accesspoint=<access_point_id> <file_system_id>:/ <mount_point>
+```
+
 ## 3. Using AWS EFS with Lambda (Optional)
 
 1. **Create an EFS Access Point**:
