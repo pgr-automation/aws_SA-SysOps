@@ -110,3 +110,116 @@ Using path-based routing in CloudFront helps optimize content delivery by direct
 ---
 
 For further customization and advanced routing configurations, refer to the [AWS CloudFront Documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web.html).
+
+
+
+
+# AWS CloudFront: Cache Expiration and Custom Headers
+
+This guide provides steps to configure cache expiration settings and custom headers in AWS CloudFront. These configurations help optimize content delivery and allow custom metadata to be passed to origins for specific behaviors.
+
+## Prerequisites
+- An AWS CloudFront distribution with at least one origin.
+
+---
+
+## Table of Contents
+- [Setting Cache Expiration](#setting-cache-expiration)
+- [Adding Custom Headers](#adding-custom-headers)
+- [Example Configuration](#example-configuration)
+
+---
+
+## Setting Cache Expiration
+
+CloudFront allows you to control the cache expiration settings at the distribution level or on individual cache behaviors. 
+
+### Steps to Configure Cache Expiration
+1. **Open CloudFront Distribution Settings**:
+   - In the AWS Management Console, navigate to your **CloudFront Distribution**.
+   
+2. **Edit Cache Behavior Settings**:
+   - Go to the **Behaviors** tab.
+   - Select the behavior you want to modify, then click **Edit**.
+
+3. **Specify Cache Duration**:
+   - Locate the **Object Caching** section.
+   - Choose one of the following:
+     - **Use Origin Cache Headers**: CloudFront honors the cache headers (like `Cache-Control` or `Expires`) set by the origin.
+     - **Customize**: Specify custom TTL (Time to Live) values.
+       - **Minimum TTL**: The shortest period objects remain cached, even if cache-control headers allow shorter durations.
+       - **Default TTL**: Standard caching time for objects unless overridden by the origin.
+       - **Maximum TTL**: Longest time objects remain cached, even if origin headers suggest longer.
+   - Save your settings to apply the cache expiration policy.
+
+### Cache Expiration Tips
+- **Long TTL for Static Content**: Apply longer cache durations for static assets (e.g., images, CSS files).
+- **Short TTL for Dynamic Content**: Use shorter TTLs for frequently changing content (e.g., API responses).
+- **Use Versioning**: For static files, consider versioning filenames to force updates without reducing cache efficiency.
+
+---
+
+## Adding Custom Headers
+
+Custom headers are useful when you need to pass additional information to the origin server, such as authentication data, user agents, or custom identifiers.
+
+### Steps to Add Custom Headers
+1. **Go to the Origins and Origin Groups**:
+   - In the **Origins** section, select the origin you want to configure, then click **Edit**.
+
+2. **Add Custom Headers**:
+   - In the **Add Header** section:
+     - Specify a **Header Name** (e.g., `X-Custom-Header`).
+     - Provide a **Value** for the header.
+       - Example: `X-Custom-Header: my-custom-value`
+   - You can add multiple headers as needed.
+
+3. **Save Changes**:
+   - Save the origin configuration to apply the custom headers.
+
+### Custom Header Tips
+- **Authorization Headers**: Pass authorization tokens or API keys for secure origin access.
+- **Device Detection**: Send device or user-agent information for responsive content delivery.
+- **Debugging**: Use custom headers for debugging purposes in development environments.
+
+---
+
+## Example Configuration
+
+Below is an example configuration for setting cache expiration and custom headers in CloudFront.
+
+### Cache Expiration Example
+For an image path pattern (`/images/*`):
+- **Minimum TTL**: 1 day
+- **Default TTL**: 7 days
+- **Maximum TTL**: 30 days
+
+These settings would cache image files on CloudFront edge locations with a default duration of 7 days, optimizing for static content.
+
+### Custom Header Example
+For an API path pattern (`/api/*`):
+- **Custom Header**: `X-Api-Version: 1.0`
+- **Authorization Header**: `Authorization: Bearer <token>`
+
+These headers ensure the backend receives the correct API version information and secure authorization tokens for API calls.
+
+---
+
+## Testing and Verification
+
+1. **Deploy Changes**:
+   - After configuring, deploy the distribution settings.
+
+2. **Verify Cache Settings**:
+   - Use browser developer tools or CloudFront logs to check the `Cache-Control` and `Expires` headers.
+
+3. **Inspect Custom Headers**:
+   - Confirm the presence of custom headers by viewing the request headers sent to the origin using developer tools or monitoring tools.
+
+---
+
+## Conclusion
+
+Configuring cache expiration and custom headers in CloudFront helps tailor content delivery and optimize the performance and security of your application. For more details, refer to the [AWS CloudFront Documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web.html).
+
+---
