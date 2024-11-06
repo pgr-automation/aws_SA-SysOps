@@ -30,8 +30,12 @@ Using **AWS CloudFront** with an **S3 Bucket** as the origin allows you to deliv
 2. Click on **Create Distribution**.
 3. Choose **Web** as the distribution type.
 4. Under **Origin Settings**:
+   - Select Origin access controll settings
    - Set **Origin Domain Name** to your S3 bucket.
    - Choose **Restrict Bucket Access** if you want only CloudFront to access your S3 bucket directly.
+   ```
+    Origin access > Origin access control settings (recommended) > Create new OAC
+   ```
 5. **Viewer Protocol Policy**: Set this to **Redirect HTTP to HTTPS** for secure delivery.
 6. Configure **Cache Behavior**:
    - You can define path patterns, caching behaviors, and viewer protocols.
