@@ -123,3 +123,5 @@ AWS RDS Multi-AZ and Read Replicas are complementary solutions that together can
   
 ---
 
+
+![alt text](image.png)
