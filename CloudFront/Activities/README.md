@@ -223,3 +223,102 @@ These headers ensure the backend receives the correct API version information an
 Configuring cache expiration and custom headers in CloudFront helps tailor content delivery and optimize the performance and security of your application. For more details, refer to the [AWS CloudFront Documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web.html).
 
 ---
+
+
+
+# AWS CloudFront: Cache Key with Query Parameters
+
+This guide explains how to configure query parameters as part of the cache key in AWS CloudFront. By customizing cache keys, you can optimize caching and ensure unique responses based on query parameters.
+
+## Prerequisites
+- An AWS CloudFront distribution with one or more origins.
+- Specific query parameters you want to include or exclude from the cache key.
+
+---
+
+## Table of Contents
+- [What is a Cache Key?](#what-is-a-cache-key)
+- [Configuring Query Parameters in Cache Key](#configuring-query-parameters-in-cache-key)
+- [Testing and Verifying](#testing-and-verifying)
+- [Example Configuration](#example-configuration)
+
+---
+
+## What is a Cache Key?
+
+A **Cache Key** is a unique identifier that CloudFront uses to determine whether a cached copy of an object can be returned for a request. By default, CloudFront considers several request attributes (like URL path, headers, and cookies) in the cache key. Including query parameters in the cache key allows you to cache different versions of an object based on specific parameter values, improving cache efficiency for dynamic content.
+
+---
+
+## Configuring Query Parameters in Cache Key
+
+1. **Open CloudFront Distribution Settings**:
+   - In the AWS Management Console, navigate to **CloudFront**, and select the distribution to configure.
+
+2. **Edit Cache Behavior**:
+   - Go to the **Behaviors** tab.
+   - Select the cache behavior you want to edit, and click **Edit**.
+
+3. **Configure Cache Key and Origin Requests**:
+   - Scroll down to the **Cache Key and Origin Requests** section.
+   - Set **Cache Policy** to either:
+     - **Use a managed policy**: Select a built-in AWS managed cache policy.
+     - **Use a custom policy**: Create a custom cache policy for more granular control.
+   
+4. **Create or Customize Cache Policy**:
+   - If creating a custom policy, select **Create Cache Policy** and configure the following:
+     - **Query String Forwarding and Caching**: Choose one of the following options:
+       - **None**: Ignore all query parameters.
+       - **All**: Cache every unique combination of query parameters.
+       - **Only the specified parameters**: Cache based on a defined list of query parameters.
+     - **Specify Query Parameters**:
+       - Add the parameters you want CloudFront to consider as part of the cache key.
+       - Example: Include parameters like `?version=`, `?user=`, `?lang=` for different versions or language-based content.
+   - **Save** the policy and assign it to the cache behavior.
+
+5. **Save Cache Behavior Changes**:
+   - After selecting or creating the cache policy, save the cache behavior settings.
+
+---
+
+## Testing and Verifying
+
+1. **Deploy and Test**:
+   - Allow some time for the distribution changes to propagate.
+   - Test by accessing URLs with various query parameters to ensure CloudFront is caching and serving the correct variations.
+
+2. **Check Cache Hit/Miss in CloudFront Logs**:
+   - Use CloudFront access logs or monitoring tools to inspect cache hits and misses based on query parameters.
+   - Look for cache keys in logs that include the specified query parameters.
+
+3. **Inspect Headers**:
+   - Use developer tools (e.g., Chrome DevTools) to check `x-cache` response headers:
+     - `x-cache: Hit from cloudfront` indicates a cached response.
+     - `x-cache: Miss from cloudfront` indicates a new cache entry was created.
+
+---
+
+## Example Configuration
+
+Here’s an example of how query parameters could be configured in a custom cache policy:
+
+- **Path Pattern**: `/content/*`
+- **Query Parameters in Cache Key**: 
+  - `version`: Cache variations of the content based on versioning (e.g., `?version=1` or `?version=2`).
+  - `lang`: Cache different language content (e.g., `?lang=en` or `?lang=es`).
+  
+By configuring this, CloudFront will treat requests to `/content/page.html?version=1&lang=en` and `/content/page.html?version=2&lang=es` as separate cache keys.
+
+---
+
+## Conclusion
+
+Including query parameters in the cache key is essential for applications serving dynamic content based on parameters, like user settings or content versions. Configuring cache keys effectively improves cache hit ratios, reduces origin load, and enhances user experience by serving content tailored to specific request parameters.
+
+For more details, refer to the [AWS CloudFront Documentation on Cache Keys](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/working-with-cache-keys.html).
+
+---
+
+
+```
+Go to CloudFront > edit behavior > cache policy > view policy > edit policy > set Cache key settings.
